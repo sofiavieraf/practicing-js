@@ -59,7 +59,7 @@
 	};
 
 	var tests = [
-		'when first parameter is a dictionary, it should use it to initialize its properties', function() {
+		'when first parameter is a dictionary, it should use it to initialize its properties', () => {
 			var person = new Person( mcfly );
 
 			assertEq( person.name, mcfly.name );
