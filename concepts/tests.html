@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html lang="es">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Tests</title>
+		<script type="text/javascript" src="person.js"></script>
+		<script type="text/javascript" src="test-runner.js"></script>
+		<script type="text/javascript" src="test-person.js"></script>
+		<style type="text/css">
+			a {
+				color: red;
+			}
+
+			.hidden {
+				display: none;
+			}
+
+			.shown {
+				display: block;
+			}
+
+			.tests {
+				border: 1px solid #803c15;
+				background-color: black;
+				color: #ffc9aa;
+				padding: 10px;
+				margin: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<button onclick="runTests()">Correr Tests</button>
+		<div class="tests shown">
+			<a href="#" id="toggle-hide">Hide</a>
+			<div id="test-results">
+			</div>
+		</div>
+		<script type="text/javascript">
+			"use strict";
+
+			var hidden = false;
+
+			function runTests() {
+				var resultString = "";
+
+				testRunner.run();
+				testRunner.forEachRunTest( function( testName, testResult ) {
+					var separatorIndex = testResult.indexOf( '|' );
+					separatorIndex = separatorIndex == -1 ? testResult.length : separatorIndex;
+
+					var status = testResult.substr( 0, separatorIndex );
+					var message = testResult.substr( separatorIndex + 1 );
+
+					switch ( status ) {
+						case 'OK':
+							resultString += '<span style="color: green">' + testName + '... OK</span><br>';
+							break;
+						case 'FAILED':
+						case 'ERROR':
+							resultString += '<span style="color: white">' + testName + "... " + status + '</span><div style="margin-left: 3em">' + message + '</div>';
+							break;
+						case 'SKIPPED':
+							resultString += '<span style="color: yellow">' + testName + "... " + status + '</span><div style="margin-left: 3em">' + message + '</div>';
+					}
+				});
+
+				document.getElementById( "test-results" ).innerHTML = resultString;
+			}
+
+			window.onload = function() {
+				var hidden = false;
+
+				runTests();
+
+				document.getElementById( "toggle-hide" ).addEventListener( "click", function ( evt ) {
+					evt.preventDefault();
+
+					if ( hidden ) {
+						evt.target.innerHTML = "Hide";
+						document.getElementById( "test-results" ).className = "shown";
+					} else {
+						evt.target.innerHTML = "Show";
+						document.getElementById( "test-results" ).className = "hidden";
+					}
+
+					hidden = !hidden;
+				});
+			};
+		</script>
+	</body>
+</html>
